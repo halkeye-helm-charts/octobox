@@ -16,6 +16,19 @@ service:
   type: ClusterIP
   port: 80
 
+octobox:
+  github:
+    client_id:
+    client_secret:
+  secret_key:
+  redis:
+    url: redis://redis-master:6379
+  database:
+    username:
+    password:
+    name:
+    host:
+
 ingress:
   enabled: false
   annotations: {}
