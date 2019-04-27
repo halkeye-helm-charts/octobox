@@ -1,0 +1,11 @@
+apiVersion: v1
+appVersion: "latest"
+description: Untangle your GitHub Notifications
+name: octobox
+version: 0.1.0
+icon: https://octobox.io/assets/infinitacle-round-3332cf1ee4ec7508f5be2cee8fba05407360b0e937cd84acb2dbdd9c8a1ad5e2.svg
+sources:
+  - https://github.com/octobox/octobox/
+maintainers:
+  - name: Gavin Mogan
+    email: helm@gavinmogan.com

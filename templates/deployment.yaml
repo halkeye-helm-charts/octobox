@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "octobox.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "octobox.name" . }}
+    helm.sh/chart: {{ include "octobox.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "octobox.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "octobox.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      {{- if .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml .Values.dnsConfig | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: GITHUB_CLIENT_ID
+              value: {{ .Values.octobox.github.client_id | quote }}
+            - name: GITHUB_CLIENT_SECRET
+              value: {{ .Values.octobox.github.client_secret | quote }}
+            - name: RAILS_SERVE_STATIC_FILES
+              value: "true"
+            - name: RAILS_LOG_TO_STDOUT
+              value: "true"
+            - name: OCTOBOX_SIDEKIQ_SCHEDULE_ENABLED
+              value: "true"
+            - name: RAILS_ENV
+              value: "production"
+            - name: SECRET_KEY_BASE
+              value: {{ .Values.octobox.secret_key | quote }}
+            - name: OCTOBOX_DATABASE_USERNAME
+              value: {{ .Values.octobox.database.username | quote }}
+            - name: OCTOBOX_DATABASE_PASSWORD
+              value: {{ .Values.octobox.database.password | quote }}
+            - name: OCTOBOX_DATABASE_NAME
+              value: {{ .Values.octobox.database.name | quote }}
+            - name: OCTOBOX_DATABASE_HOST
+              value: {{ .Values.octobox.database.host | quote }}
+            - name: REDIS_URL 
+              value: {{ .Values.octobox.redis.url | quote }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+            - name: websocket
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+      - name: etc-timezone
+        hostPath:
+          path: /etc/localtime
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
