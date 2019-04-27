@@ -17,9 +17,11 @@ service:
   port: 80
 
 octobox:
+  ga_analytics_id:
   github:
     client_id:
     client_secret:
+    domain:
   secret_key:
   redis:
     url: redis://redis-master:6379
@@ -28,6 +30,10 @@ octobox:
     password:
     name:
     host:
+  restricted:
+    enabled: false
+    github_organization_id:
+    github_team_id:
 
 ingress:
   enabled: false

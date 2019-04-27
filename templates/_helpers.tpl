@@ -30,3 +30,13 @@ Create chart name and version as used by the chart label.
 {{- define "octobox.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Join With http and https
+*/}}
+{{- define "octobox.joinHttpHttps" -}}
+{{- $lastHost := last . -}}
+{{- range $idx, $host := . -}}
+http://{{ $host }},https://{{ $host }}{{ if ne $host $lastHost }},{{ end }}
+{{- end -}}
+{{- end -}}
