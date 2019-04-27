@@ -64,6 +64,8 @@ spec:
               value: {{ .Values.octobox.redis.url | quote }}
             - name: PERSONAL_ACCESS_TOKENS_ENABLED
               value: "1"
+            - name: MINIMUM_REFRESH_INTERVAL
+              value: "1"
 {{- if .Values.ingress.enabled }}
             - name: PUSH_NOTIFICATIONS
               value: "true"
