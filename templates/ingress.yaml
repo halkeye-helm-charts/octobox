@@ -10,7 +10,6 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
   annotations:
-    nginx.org/websocket-services: "websocket"
   {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -34,9 +33,5 @@ spec:
             backend:
               serviceName: {{ $fullName }}
               servicePort: http
-          - path: "/cable"
-            backend:
-              serviceName: {{ $fullName }}
-              servicePort: websocket
   {{- end }}
 {{- end }}

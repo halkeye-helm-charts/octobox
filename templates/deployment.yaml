@@ -33,9 +33,6 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
-            - name: websocket
-              containerPort: 3000
-              protocol: TCP
           livenessProbe:
             httpGet:
               path: /
