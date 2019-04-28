@@ -57,6 +57,10 @@ All the environmental variables
 - name: ADMIN_GITHUB_IDS
   value: {{ join "," .Values.octobox.github.admin_ids | quote }}
 {{- end }}
+{{- if .Values.octobox.github.scopes }}
+- name: GITHUB_SCOPE
+  value: {{ join "," .Values.octobox.github.scopes | quote }}
+{{- end }}
 {{- if .Values.octobox.ga_analytics_id }}
 - name: GA_ANALYTICS_ID
   value: {{ .Values.octobox.ga_analytics_id | quote }}

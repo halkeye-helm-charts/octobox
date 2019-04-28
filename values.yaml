@@ -23,6 +23,7 @@ octobox:
     client_secret:
     domain:
     admin_ids: []
+    scopes: []
   secret_key:
   redis:
     url: redis://redis-master:6379
